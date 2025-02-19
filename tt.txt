@@ -1,0 +1,173 @@
+Создайте тестовый проект на MSUnit. Напишите тест для метода Add(int a, int b), в проекте
+bilet_n, который возвращает сумму двух чисел. Убедитесь, что тест проверяет корректность
+работы метода для положительных, отрицательных и нулевых значений.
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace bilet_n.Tests
+{
+    [TestClass]
+    public class MathTests
+    {
+        [TestMethod]
+        public void Add_ShouldReturnCorrectSum_ForPositiveNumbers()
+        {
+            int result = Add(3, 5);
+            Assert.AreEqual(8, result);
+        }
+
+        [TestMethod]
+        public void Add_ShouldReturnCorrectSum_ForNegativeNumbers()
+        {
+            int result = Add(-3, -5);
+            Assert.AreEqual(-8, result);
+        }
+
+        [TestMethod]
+        public void Add_ShouldReturnCorrectSum_ForZero()
+        {
+            int result = Add(0, 5);
+            Assert.AreEqual(5, result);
+        }
+
+        private int Add(int a, int b)
+        {
+            return a + b;
+        }
+    }
+}
+
+Создайте тестовый проект на NUnit. Напишите тест для метода Divide(int a, int b) в проекте
+bilet_n, который выбрасывает исключение DivideByZeroException, если b равен нулю.
+Проверьте, что исключение действительно выбрасывается.
+
+using NUnit.Framework;
+using System;
+
+namespace bilet_n.Tests
+{
+    public class MathTests
+    {
+        [Test]
+        public void Divide_ShouldThrowDivideByZeroException_WhenDivisorIsZero()
+        {
+            Assert.Throws<DivideByZeroException>(() => Divide(10, 0));
+        }
+
+        private int Divide(int a, int b)
+        {
+            if (b == 0)
+                throw new DivideByZeroException();
+            return a / b;
+        }
+    }
+}
+
+Создайте тестовый проект на MSUnit. Создайте параметризованный тест для метода
+IsEven(int number) проекта bilet_n, который проверяет, является ли число четным. Используйте
+атрибут [DataTestMethod] и [DataRow] для передачи различных входных данных
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace bilet_n.Tests
+{
+    [TestClass]
+    public class MathTests
+    {
+        [DataTestMethod]
+        [DataRow(2, true)]
+        [DataRow(3, false)]
+        [DataRow(0, true)]
+        [DataRow(-4, true)]
+        [DataRow(-5, false)]
+        public void IsEven_ShouldReturnCorrectResult(int number, bool expected)
+        {
+            bool result = IsEven(number);
+            Assert.AreEqual(expected, result);
+        }
+
+        private bool IsEven(int number)
+        {
+            return number % 2 == 0;
+        }
+    }
+}
+
+Создайте тестовый проект на NUnit. Напишите тест для метода Factorial(int n) проекта
+bilet_n, который вычисляет факториал числа. Проверьте корректность работы метода для
+различных входных данных, включая граничные случаи.
+
+using NUnit.Framework;
+
+namespace bilet_n.Tests
+{
+    public class MathTests
+    {
+        [Test]
+        public void Factorial_ShouldReturnCorrectResult_ForPositiveNumbers()
+        {
+            Assert.AreEqual(120, Factorial(5));
+        }
+
+        [Test]
+        public void Factorial_ShouldReturn1_ForZero()
+        {
+            Assert.AreEqual(1, Factorial(0));
+        }
+
+        [Test]
+        public void Factorial_ShouldThrowArgumentException_ForNegativeNumbers()
+        {
+            Assert.Throws<ArgumentException>(() => Factorial(-1));
+        }
+
+        private int Factorial(int n)
+        {
+            if (n < 0)
+                throw new ArgumentException("n must be non-negative");
+            if (n == 0)
+                return 1;
+            return n * Factorial(n - 1);
+        }
+    }
+}
+
+Создайте тестовый проект на xUnit. Напишите тест для метода IsPalindrome(string text)
+проекта bilet_n, который проверяет, является ли строка палиндромом. Проверьте корректность
+работы метода для различных строк.
+
+using Xunit;
+
+namespace bilet_n.Tests
+{
+    public class StringTests
+    {
+        [Theory]
+        [InlineData("madam", true)]
+        [InlineData("racecar", true)]
+        [InlineData("hello", false)]
+        [InlineData("level", true)]
+        [InlineData("", true)]
+        public void IsPalindrome_ShouldReturnCorrectResult(string text, bool expected)
+        {
+            bool result = IsPalindrome(text);
+            Assert.Equal(expected, result);
+        }
+
+        private bool IsPalindrome(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return true;
+
+            int left = 0, right = text.Length - 1;
+            while (left < right)
+            {
+                if (text[left] != text[right])
+                    return false;
+                left++;
+                right--;
+            }
+            return true;
+        }
+    }
+}
