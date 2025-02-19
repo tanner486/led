@@ -1,0 +1,164 @@
+Напишите программу, в которой генерируется случайное целое число (например, в диапазоне
+от 1 до 10), а пользователю необходимо его угадать. Если пользователь не угадал число,
+программа выдает запрос о том, хочет ли он попробовать еще раз.
+
+Random random = new Random();
+int number = random.Next(1, 11);
+bool guessed = false;
+while (!guessed)
+{
+    Console.Write("Угадайте число от 1 до 10: ");
+    int guess = int.Parse(Console.ReadLine());
+    if (guess == number)
+    {
+        Console.WriteLine("Поздравляем! Вы угадали число.");
+        guessed = true;
+    }
+    else
+    {
+        Console.Write("Не угадали. Хотите попробовать еще раз? (да/нет): ");
+        string answer = Console.ReadLine();
+        if (answer.ToLower() != "да")
+        {
+            break;
+        }
+    }
+}
+
+Напишите программу, в которой пользователь вводит дату своего рождения, а программа
+вычисляет, сколько прошло полных лет, месяцев и дней от указанной даты до текущей.
+
+Console.Write("Введите дату рождения (гггг-мм-дд): ");
+DateTime birthDate = DateTime.Parse(Console.ReadLine());
+DateTime now = DateTime.Now;
+int years = now.Year - birthDate.Year;
+int months = now.Month - birthDate.Month;
+int days = now.Day - birthDate.Day;
+if (days < 0)
+{
+    months--;
+    days += DateTime.DaysInMonth(now.Year, now.Month);
+}
+
+if (months < 0)
+{
+    years--;
+    months += 12;
+}
+Console.WriteLine($"Прошло {years} лет, {months} месяцев и {days} дней.");
+
+Напишите программу, в которой считывается содержимое текстового файла и создается
+новый текстовый файл. В новый текстовый файл заносится текст из исходного текстового
+файла, но все пробелы заменяются подчеркиваниями, а заглавные буквы заменяются
+строчными.
+
+string inputFilePath = "input.txt";
+string outputFilePath = "output.txt";
+string text = File.ReadAllText(inputFilePath);
+text = text.Replace(" ", "_").ToLower();
+File.WriteAllText(outputFilePath, text);
+Console.WriteLine("Файл успешно обработан.");
+
+Напишите метод, который преобразует строку в формат camelCase, то есть первая буква во
+всех словах должна быть заглавной, а пробелы должны быть удалены. Возможность сохранять
+данные в файл и считывать данные из файла.
+
+using System;
+using System.IO;
+class Program
+{
+    static void Main()
+    {
+        string input = "пример строки для преобразования";
+        string camelCase = ConvertToCamelCase(input);
+        File.WriteAllText("output.txt", camelCase);
+        Console.WriteLine(File.ReadAllText("output.txt"));
+    }
+
+    static string ConvertToCamelCase(string str) =>
+        string.Join("", str.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                           .Select(word => char.ToUpper(word[0]) + word[1..].ToLower()));
+}
+
+Напишите функцию, которая принимает строку из одного или нескольких слов и возвращает
+ту же строку, но все слова, содержащие пять или более букв, меняются местами (как в показано
+в примере). Передаваемые строки будут состоять только из букв и пробелов. Пробелы будут
+включены только в том случае, если присутствует более одного слова.
+
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        string input = "это пример строки с несколькими длинными словами";
+        string result = SwapLongWords(input);
+        Console.WriteLine(result);
+    }
+
+    static string SwapLongWords(string str)
+    {
+        var words = str.Split(' ');
+        var longWords = words.Where(w => w.Length >= 5).ToArray();
+        var swapped = longWords.Reverse().ToArray();
+
+        for (int i = 0, j = 0; i < words.Length; i++)
+        {
+            if (words[i].Length >= 5)
+            {
+                words[i] = swapped[j++];
+            }
+        }
+
+        return string.Join(" ", words);
+    }
+}
+
+Напишите функцию, которая принимает массив из 10 целых чисел (от 0 до 9) и возвращает
+строку из этих чисел в виде телефонного номера.
+
+using System;
+class Program
+{
+    static void Main()
+    {
+        string phoneNumber = GenerateRandomPhoneNumber();
+        Console.WriteLine(phoneNumber);
+    }
+    static string GenerateRandomPhoneNumber()
+    {
+        Random rand = new Random();
+        int[] numbers = new int[10];
+        for (int i = 0; i < 10; i++)
+        {
+            numbers[i] = rand.Next(0, 10);
+        }
+        return $"({numbers[0]}{numbers[1]}{numbers[2]}) {numbers[3]}{numbers[4]}{numbers[5]}-{numbers[6]}{numbers[7]}{numbers[8]}{numbers[9]}";
+    }
+}
+
+Напишите функцию, которая может принимать любое неотрицательное целое число в
+качестве аргумента и возвращать его с его цифрами в порядке убывания. По сути, переставьте
+цифры, чтобы получить максимально возможное число.
+
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int number = 321045;
+        int result = RearrangeDigitsDescending(number);
+        Console.WriteLine(result);
+    }
+    static int RearrangeDigitsDescending(int number)
+    {
+        string numberString = number.ToString();
+        char[] digits = numberString.ToCharArray();
+        Array.Sort(digits);
+        Array.Reverse(digits);
+        string sortedNumberString = new string(digits);
+        return int.Parse(sortedNumberString);
+    }
+}
